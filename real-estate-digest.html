@@ -316,3 +316,285 @@
   .api-key-save-btn:hover { background: #c8a96e22; }
 
   @media (max-width: 600px) {
+    .masthead { padding: 14px 20px; }
+    .container { padding: 24px 20px 40px; }
+    .headline { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-title">APL <span>Real Estate</span> Digest</div>
+  <div class="masthead-meta" id="masthead-date">Loading...</div>
+</div>
+
+<div class="container">
+  <div class="dateline" id="top-dateline"></div>
+  <h1 class="headline">Real Estate<br>Morning Briefing</h1>
+  <p class="subheadline">Daily market intelligence for the APL Group — refreshed every morning after 9:00 AM EST</p>
+
+  <div id="api-key-section"></div>
+
+  <button class="refresh-btn" id="refresh-btn" onclick="fetchDigest(true)">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M13.5 8a5.5 5.5 0 11-1.1-3.3" stroke-linecap="round"/>
+      <path d="M13.5 3v2.5H11" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Refresh digest
+  </button>
+
+  <div id="content-area"></div>
+</div>
+
+<script>
+  const STORAGE_PREFIX = 'realestate_digest_';
+
+  function todayKey() {
+    return STORAGE_PREFIX + new Date().toISOString().slice(0, 10);
+  }
+
+  function formatDate(d) {
+    return d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+  }
+
+  function setDateLabels() {
+    const str = formatDate(new Date());
+    document.getElementById('masthead-date').textContent = str;
+    document.getElementById('top-dateline').textContent = str;
+  }
+
+  function getApiKey() {
+    return localStorage.getItem('anthropic_api_key') || '';
+  }
+
+  function saveApiKey(key) {
+    localStorage.setItem('anthropic_api_key', key.trim());
+  }
+
+  function renderApiKeySection(show) {
+    const el = document.getElementById('api-key-section');
+    if (!show) { el.innerHTML = ''; return; }
+    el.innerHTML = `
+      <div class="api-key-notice">
+        <strong>One-time setup required.</strong> This page calls the Anthropic API to generate your digest.
+        Enter your API key below — it's saved locally in your browser and never sent anywhere except Anthropic.<br>
+        Get your key at <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a>.
+        <div class="api-key-input-row">
+          <input class="api-key-input" id="api-key-input" type="password" placeholder="sk-ant-..." value="${getApiKey()}" />
+          <button class="api-key-save-btn" onclick="handleSaveKey()">Save & Load</button>
+        </div>
+      </div>`;
+  }
+
+  function handleSaveKey() {
+    const val = document.getElementById('api-key-input').value.trim();
+    if (!val.startsWith('sk-')) {
+      alert('Please enter a valid Anthropic API key (starts with sk-ant-)');
+      return;
+    }
+    saveApiKey(val);
+    renderApiKeySection(false);
+    fetchDigest(false);
+  }
+
+  function showLoading() {
+    document.getElementById('content-area').innerHTML = `
+      <div class="loading-state">
+        <div class="loading-spinner"></div>
+        <div class="loading-label">Compiling today's digest</div>
+        <div class="loading-steps">
+          <div class="step active" id="s1">Searching real estate headlines...</div>
+          <div class="step" id="s2">Scanning mortgage & rates...</div>
+          <div class="step" id="s3">Reviewing commercial deals...</div>
+          <div class="step" id="s4">Writing briefing...</div>
+        </div>
+      </div>`;
+    let i = 1;
+    const iv = setInterval(() => {
+      const el = document.getElementById('s' + i);
+      if (el) el.classList.add('done');
+      i++;
+      const next = document.getElementById('s' + i);
+      if (next) next.classList.add('active');
+      if (i > 4) clearInterval(iv);
+    }, 2200);
+  }
+
+  function renderItem(raw) {
+    let item = raw.trim();
+    const srcMatch = item.match(/[\u2014\u2013]\s*([^\u2014\u2013]+)$/);
+    let srcHtml = '';
+    if (srcMatch) {
+      srcHtml = ` <em>— ${srcMatch[1].trim()}</em>`;
+      item = item.slice(0, item.lastIndexOf(srcMatch[0])).trim();
+    }
+    item = item.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    item = item.replace(/\*/g, '');
+    return `<li>${item}${srcHtml}</li>`;
+  }
+
+  function parseDigest(text) {
+    const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+    const sections = [];
+    let current = null;
+
+    for (const line of lines) {
+      if (line.startsWith('📊') || /MARKET SNAPSHOT/i.test(line)) {
+        current = { type: 'snapshot', content: '' };
+        sections.push(current);
+        continue;
+      }
+      if (/^(🏠|🏢|💰|📈|🌐)/.test(line) || /^#+\s*(RESIDENTIAL|COMMERCIAL|FINANCING|INVESTMENT|MACRO)/i.test(line)) {
+        const title = line.replace(/^[🏠🏢💰📈🌐#+\s]+/, '').replace(/\*\*/g, '').trim();
+        current = { type: 'list', title: title, items: [] };
+        sections.push(current);
+        continue;
+      }
+      if (/^[•\-]/.test(line)) {
+        const item = line.replace(/^[•\-]\s*/, '');
+        if (current?.type === 'snapshot') current.content += (current.content ? ' ' : '') + item;
+        else if (current?.type === 'list') current.items.push(item);
+        continue;
+      }
+      if (current?.type === 'snapshot' && !line.startsWith('━') && !/DIGEST|Compiled/i.test(line)) {
+        current.content += (current.content ? ' ' : '') + line;
+      }
+    }
+    return sections.filter(s => (s.type === 'snapshot' && s.content) || (s.type === 'list' && s.items.length > 0));
+  }
+
+  function renderDigest(markdown, fromCache) {
+    const sections = parseDigest(markdown);
+    let html = '<div class="digest-body">';
+    const icons = { 'RESIDENTIAL': '🏠', 'COMMERCIAL': '🏢', 'FINANCING': '💰', 'INVESTMENT': '📈', 'MACRO': '🌐' };
+
+    for (const sec of sections) {
+      if (sec.type === 'snapshot') {
+        html += `<div class="section">
+          <div class="section-header">
+            <div class="section-icon">📊</div>
+            <div class="section-title">Market Snapshot</div>
+          </div>
+          <div class="snapshot-box">${sec.content}</div>
+        </div>`;
+      } else {
+        const icon = Object.entries(icons).find(([k]) => sec.title.toUpperCase().includes(k))?.[1] || '📌';
+        const items = sec.items.map(renderItem).join('');
+        html += `<div class="section">
+          <div class="section-header">
+            <div class="section-icon">${icon}</div>
+            <div class="section-title">${sec.title}</div>
+          </div>
+          <ul>${items}</ul>
+        </div>`;
+      }
+    }
+
+    const ts = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    html += `<div class="footer-bar">
+      <div class="footer-tag">Compiled by Claude · APL Group</div>
+      ${fromCache
+        ? '<div class="cached-badge">Cached today · click Refresh for latest</div>'
+        : `<div class="cached-badge">Generated at ${ts}</div>`}
+    </div>`;
+    html += '</div>';
+    document.getElementById('content-area').innerHTML = html;
+  }
+
+  async function fetchDigest(force) {
+    const apiKey = getApiKey();
+    if (!apiKey) {
+      renderApiKeySection(true);
+      document.getElementById('content-area').innerHTML = '';
+      return;
+    }
+
+    const key = todayKey();
+
+    if (!force) {
+      const cached = localStorage.getItem(key);
+      if (cached) { renderDigest(cached, true); return; }
+    }
+
+    showLoading();
+    document.getElementById('refresh-btn').disabled = true;
+    const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 3000,
+          tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+          system: `You are a professional real estate analyst. Search the web for today's most important real estate news (${today}) and write a morning digest.
+
+CRITICAL: Every bullet point MUST have a real description after the headline. Never output a headline without content. Format:
+
+📊 MARKET SNAPSHOT
+- [Write 2 full sentences describing today's overall market direction and key themes.]
+
+🏠 RESIDENTIAL
+- **Headline here:** Write 1-2 full sentences of actual news content describing what happened. — SourceName
+- **Headline here:** Write 1-2 full sentences of actual news content describing what happened. — SourceName
+- **Headline here:** Write 1-2 full sentences of actual news content describing what happened. — SourceName
+
+🏢 COMMERCIAL & INDUSTRIAL
+- **Headline here:** Write 1-2 full sentences of actual news content describing what happened. — SourceName
+- **Headline here:** Write 1-2 full sentences of actual news content describing what happened. — SourceName
+
+💰 FINANCING & RATES
+- **Headline here:** Write 1-2 full sentences about current rates or financing news. — SourceName
+- **Headline here:** Write 1-2 full sentences about Fed or credit markets. — SourceName
+
+📈 INVESTMENT & DEALS
+- **Headline here:** Write 1-2 full sentences about this deal or investment trend. — SourceName
+- **Headline here:** Write 1-2 full sentences about this deal or investment trend. — SourceName
+
+🌐 MACRO & POLICY
+- **Headline here:** Write 1-2 full sentences about this policy or macro trend. — SourceName
+
+Rules: Always write real content after each headline. Use — (em dash) before source name. No empty bullets. No preamble. No closing remarks.`,
+          messages: [{ role: 'user', content: `Search for real estate news and compile the full morning digest for ${today}. Search for: real estate market news today, mortgage rates today, commercial real estate deals news, housing market update, real estate investment news.` }]
+        })
+      });
+
+      if (res.status === 401) {
+        localStorage.removeItem('anthropic_api_key');
+        renderApiKeySection(true);
+        document.getElementById('content-area').innerHTML = `<div class="error-state"><div class="error-label">Invalid API key — please re-enter your key above</div></div>`;
+        document.getElementById('refresh-btn').disabled = false;
+        return;
+      }
+
+      const data = await res.json();
+      const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n');
+
+      if (text && text.length > 100) {
+        localStorage.setItem(key, text);
+        renderDigest(text, false);
+      } else {
+        throw new Error('Empty response');
+      }
+    } catch (err) {
+      document.getElementById('content-area').innerHTML = `
+        <div class="error-state">
+          <div class="error-label">Unable to load digest — check your API key or try refreshing</div>
+        </div>`;
+    }
+
+    document.getElementById('refresh-btn').disabled = false;
+  }
+
+  setDateLabels();
+  fetchDigest(false);
+</script>
+</body>
+</html>
