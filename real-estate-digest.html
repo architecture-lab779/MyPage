@@ -7,313 +7,63 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:wght@300;400;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Source Serif 4', serif; background: #0d0d0d; color: #e8e0d0; min-height: 100vh; }
 
-  body {
-    font-family: 'Source Serif 4', serif;
-    background: #0d0d0d;
-    color: #e8e0d0;
-    min-height: 100vh;
-  }
-
-  .masthead {
-    border-bottom: 1px solid #333;
-    padding: 18px 40px 14px;
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    background: #0d0d0d;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-
-  .masthead-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    font-weight: 900;
-    letter-spacing: 0.04em;
-    color: #f5ede0;
-    text-transform: uppercase;
-  }
-
+  .masthead { border-bottom: 1px solid #333; padding: 18px 40px 14px; display: flex; align-items: baseline; justify-content: space-between; background: #0d0d0d; position: sticky; top: 0; z-index: 10; }
+  .masthead-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; letter-spacing: 0.04em; color: #f5ede0; text-transform: uppercase; }
   .masthead-title span { color: #c8a96e; }
+  .masthead-meta { font-family: 'DM Mono', monospace; font-size: 11px; color: #666; letter-spacing: 0.08em; text-transform: uppercase; }
 
-  .masthead-meta {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: #666;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 40px 60px; }
+  .dateline { font-family: 'DM Mono', monospace; font-size: 11px; color: #c8a96e; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; }
+  .headline { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; line-height: 1.15; color: #f5ede0; margin-bottom: 6px; }
+  .subheadline { font-size: 15px; color: #888; font-weight: 300; margin-bottom: 28px; border-bottom: 0.5px solid #222; padding-bottom: 22px; }
 
-  .container {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 32px 40px 60px;
-  }
-
-  .dateline {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: #c8a96e;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-
-  .headline {
-    font-family: 'Playfair Display', serif;
-    font-size: 36px;
-    font-weight: 700;
-    line-height: 1.15;
-    color: #f5ede0;
-    margin-bottom: 6px;
-  }
-
-  .subheadline {
-    font-size: 15px;
-    color: #888;
-    font-weight: 300;
-    margin-bottom: 28px;
-    border-bottom: 0.5px solid #222;
-    padding-bottom: 22px;
-  }
-
-  .refresh-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    background: transparent;
-    border: 1px solid #333;
-    color: #888;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 7px 14px;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-bottom: 28px;
-  }
-
-  .refresh-btn:hover { border-color: #c8a96e; color: #c8a96e; }
-  .refresh-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  .refresh-btn svg { width: 12px; height: 12px; }
+  .btn-row { display: flex; gap: 10px; margin-bottom: 28px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 7px; background: transparent; border: 1px solid #333; color: #888; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 14px; border-radius: 3px; cursor: pointer; transition: all 0.2s; }
+  .btn:hover { border-color: #c8a96e; color: #c8a96e; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn svg { width: 12px; height: 12px; }
 
   .loading-state { padding: 60px 0; text-align: center; }
-
-  .loading-spinner {
-    width: 32px;
-    height: 32px;
-    border: 1.5px solid #333;
-    border-top-color: #c8a96e;
-    border-radius: 50%;
-    animation: spin 0.9s linear infinite;
-    margin: 0 auto 16px;
-  }
-
+  .loading-spinner { width: 32px; height: 32px; border: 1.5px solid #333; border-top-color: #c8a96e; border-radius: 50%; animation: spin 0.9s linear infinite; margin: 0 auto 16px; }
   @keyframes spin { to { transform: rotate(360deg); } }
-
-  .loading-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: #555;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .loading-steps {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: center;
-  }
-
-  .step {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: #444;
-    letter-spacing: 0.06em;
-    opacity: 0;
-    transition: opacity 0.4s;
-  }
-
+  .loading-label { font-family: 'DM Mono', monospace; font-size: 11px; color: #555; letter-spacing: 0.1em; text-transform: uppercase; }
+  .loading-steps { margin-top: 20px; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  .step { font-family: 'DM Mono', monospace; font-size: 11px; color: #444; letter-spacing: 0.06em; opacity: 0; transition: opacity 0.4s; }
   .step.active { color: #c8a96e; opacity: 1; }
   .step.done { color: #555; opacity: 1; }
 
-  .digest-body { font-size: 15px; line-height: 1.75; color: #c8bfa8; }
-
-  .section {
-    margin-bottom: 28px;
-    padding-bottom: 24px;
-    border-bottom: 0.5px solid #1e1e1e;
-  }
-
+  .section { margin-bottom: 28px; padding-bottom: 24px; border-bottom: 0.5px solid #1e1e1e; }
   .section:last-of-type { border-bottom: none; }
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .section-icon { width: 28px; height: 28px; border-radius: 3px; background: #1a1a1a; border: 0.5px solid #2a2a2a; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+  .section-title { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #c8a96e; }
 
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
-  }
-
-  .section-icon {
-    width: 28px;
-    height: 28px;
-    border-radius: 3px;
-    background: #1a1a1a;
-    border: 0.5px solid #2a2a2a;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    flex-shrink: 0;
-  }
-
-  .section-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #c8a96e;
-  }
+  .snapshot-box { background: #141410; border: 0.5px solid #2a2820; border-left: 2px solid #c8a96e; border-radius: 2px; padding: 14px 18px; font-size: 14.5px; color: #c8bfa8; line-height: 1.7; }
 
   .section ul { list-style: none; padding: 0; }
-
-  .section ul li {
-    font-size: 14.5px;
-    line-height: 1.7;
-    color: #b8b0a0;
-    padding: 5px 0 5px 16px;
-    position: relative;
-    border-bottom: 0.5px solid #181818;
-  }
-
+  .section ul li { font-size: 14.5px; line-height: 1.72; color: #b8b0a0; padding: 8px 0 8px 16px; position: relative; border-bottom: 0.5px solid #181818; }
   .section ul li:last-child { border-bottom: none; }
+  .section ul li::before { content: ''; position: absolute; left: 0; top: 17px; width: 5px; height: 1px; background: #c8a96e; }
+  .item-title { color: #e8e0d0; font-weight: 600; }
+  .item-source { font-style: normal; color: #555; font-family: 'DM Mono', monospace; font-size: 12px; }
 
-  .section ul li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 13px;
-    width: 5px;
-    height: 1px;
-    background: #c8a96e;
-  }
+  .footer-bar { margin-top: 40px; padding-top: 18px; border-top: 0.5px solid #1e1e1e; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .footer-tag { font-family: 'DM Mono', monospace; font-size: 10px; color: #444; letter-spacing: 0.1em; text-transform: uppercase; }
+  .cached-badge { font-family: 'DM Mono', monospace; font-size: 10px; color: #555; letter-spacing: 0.08em; text-transform: uppercase; background: #161616; border: 0.5px solid #2a2a2a; padding: 3px 8px; border-radius: 2px; }
 
-  .section ul li strong { color: #e8e0d0; font-weight: 600; }
-
-  .section ul li em {
-    font-style: normal;
-    color: #666;
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-  }
-
-  .snapshot-box {
-    background: #141410;
-    border: 0.5px solid #2a2820;
-    border-left: 2px solid #c8a96e;
-    border-radius: 2px;
-    padding: 14px 18px;
-    font-size: 14.5px;
-    color: #c8bfa8;
-    line-height: 1.7;
-  }
-
-  .footer-bar {
-    margin-top: 40px;
-    padding-top: 18px;
-    border-top: 0.5px solid #1e1e1e;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .footer-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: #444;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .cached-badge {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: #555;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    background: #161616;
-    border: 0.5px solid #2a2a2a;
-    padding: 3px 8px;
-    border-radius: 2px;
-  }
+  .notice { background: #141410; border: 0.5px solid #2a2820; border-left: 2px solid #c8a96e; border-radius: 2px; padding: 14px 18px; margin-bottom: 24px; font-size: 13px; color: #888; line-height: 1.6; }
+  .notice strong { color: #c8a96e; }
+  .notice a { color: #c8a96e; }
+  .key-row { display: flex; gap: 8px; margin-top: 10px; }
+  .key-input { flex: 1; background: #0d0d0d; border: 0.5px solid #333; border-radius: 3px; color: #e8e0d0; font-family: 'DM Mono', monospace; font-size: 12px; padding: 7px 10px; outline: none; }
+  .key-input:focus { border-color: #c8a96e; }
+  .key-save { background: transparent; border: 1px solid #c8a96e; color: #c8a96e; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 14px; border-radius: 3px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+  .key-save:hover { background: #c8a96e22; }
 
   .error-state { padding: 40px 0; text-align: center; }
-
-  .error-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: #666;
-    letter-spacing: 0.08em;
-  }
-
-  .api-key-notice {
-    background: #141410;
-    border: 0.5px solid #2a2820;
-    border-left: 2px solid #c8a96e;
-    border-radius: 2px;
-    padding: 14px 18px;
-    margin-bottom: 24px;
-    font-size: 13px;
-    color: #888;
-    line-height: 1.6;
-  }
-
-  .api-key-notice strong { color: #c8a96e; }
-  .api-key-notice a { color: #c8a96e; }
-
-  .api-key-input-row {
-    display: flex;
-    gap: 8px;
-    margin-top: 10px;
-  }
-
-  .api-key-input {
-    flex: 1;
-    background: #0d0d0d;
-    border: 0.5px solid #333;
-    border-radius: 3px;
-    color: #e8e0d0;
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    padding: 7px 10px;
-    outline: none;
-  }
-
-  .api-key-input:focus { border-color: #c8a96e; }
-
-  .api-key-save-btn {
-    background: transparent;
-    border: 1px solid #c8a96e;
-    color: #c8a96e;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 7px 14px;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
-
-  .api-key-save-btn:hover { background: #c8a96e22; }
+  .error-label { font-family: 'DM Mono', monospace; font-size: 12px; color: #666; letter-spacing: 0.08em; }
 
   @media (max-width: 600px) {
     .masthead { padding: 14px 20px; }
@@ -326,7 +76,7 @@
 
 <div class="masthead">
   <div class="masthead-title">APL <span>Real Estate</span> Digest</div>
-  <div class="masthead-meta" id="masthead-date">Loading...</div>
+  <div class="masthead-meta" id="masthead-date"></div>
 </div>
 
 <div class="container">
@@ -336,65 +86,58 @@
 
   <div id="api-key-section"></div>
 
-  <button class="refresh-btn" id="refresh-btn" onclick="fetchDigest(true)">
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-      <path d="M13.5 8a5.5 5.5 0 11-1.1-3.3" stroke-linecap="round"/>
-      <path d="M13.5 3v2.5H11" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    Refresh digest
-  </button>
+  <div class="btn-row">
+    <button class="btn" id="refresh-btn" onclick="fetchDigest(true)">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M13.5 8a5.5 5.5 0 11-1.1-3.3" stroke-linecap="round"/>
+        <path d="M13.5 3v2.5H11" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Refresh digest
+    </button>
+    <button class="btn" onclick="clearAndReload()">Clear cache &amp; reload</button>
+  </div>
 
   <div id="content-area"></div>
 </div>
 
 <script>
-  const STORAGE_PREFIX = 'realestate_digest_';
+  const PREFIX = 'red_';
+  function todayKey() { return PREFIX + new Date().toISOString().slice(0,10); }
+  function fmtDate(d) { return d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'}); }
 
-  function todayKey() {
-    return STORAGE_PREFIX + new Date().toISOString().slice(0, 10);
+  function init() {
+    const s = fmtDate(new Date());
+    document.getElementById('masthead-date').textContent = s;
+    document.getElementById('top-dateline').textContent = s;
   }
 
-  function formatDate(d) {
-    return d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+  function getKey() { return localStorage.getItem('ant_key') || ''; }
+  function saveKey(k) { localStorage.setItem('ant_key', k.trim()); }
+
+  function clearAndReload() {
+    localStorage.removeItem(todayKey());
+    fetchDigest(false);
   }
 
-  function setDateLabels() {
-    const str = formatDate(new Date());
-    document.getElementById('masthead-date').textContent = str;
-    document.getElementById('top-dateline').textContent = str;
-  }
-
-  function getApiKey() {
-    return localStorage.getItem('anthropic_api_key') || '';
-  }
-
-  function saveApiKey(key) {
-    localStorage.setItem('anthropic_api_key', key.trim());
-  }
-
-  function renderApiKeySection(show) {
-    const el = document.getElementById('api-key-section');
-    if (!show) { el.innerHTML = ''; return; }
-    el.innerHTML = `
-      <div class="api-key-notice">
-        <strong>One-time setup required.</strong> This page calls the Anthropic API to generate your digest.
-        Enter your API key below — it's saved locally in your browser and never sent anywhere except Anthropic.<br>
-        Get your key at <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a>.
-        <div class="api-key-input-row">
-          <input class="api-key-input" id="api-key-input" type="password" placeholder="sk-ant-..." value="${getApiKey()}" />
-          <button class="api-key-save-btn" onclick="handleSaveKey()">Save & Load</button>
+  function showKeyPrompt() {
+    document.getElementById('api-key-section').innerHTML = `
+      <div class="notice">
+        <strong>One-time setup:</strong> Enter your Anthropic API key to power the digest.
+        Stored only in your browser. Get yours at
+        <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a>.
+        <div class="key-row">
+          <input class="key-input" id="key-inp" type="password" placeholder="sk-ant-..." />
+          <button class="key-save" onclick="onSaveKey()">Save &amp; Load</button>
         </div>
       </div>`;
+    document.getElementById('content-area').innerHTML = '';
   }
 
-  function handleSaveKey() {
-    const val = document.getElementById('api-key-input').value.trim();
-    if (!val.startsWith('sk-')) {
-      alert('Please enter a valid Anthropic API key (starts with sk-ant-)');
-      return;
-    }
-    saveApiKey(val);
-    renderApiKeySection(false);
+  function onSaveKey() {
+    const v = document.getElementById('key-inp').value.trim();
+    if (!v.startsWith('sk-')) { alert('Enter a valid Anthropic API key (starts with sk-ant-)'); return; }
+    saveKey(v);
+    document.getElementById('api-key-section').innerHTML = '';
     fetchDigest(false);
   }
 
@@ -405,121 +148,126 @@
         <div class="loading-label">Compiling today's digest</div>
         <div class="loading-steps">
           <div class="step active" id="s1">Searching real estate headlines...</div>
-          <div class="step" id="s2">Scanning mortgage & rates...</div>
+          <div class="step" id="s2">Scanning mortgage &amp; rates...</div>
           <div class="step" id="s3">Reviewing commercial deals...</div>
           <div class="step" id="s4">Writing briefing...</div>
         </div>
       </div>`;
     let i = 1;
     const iv = setInterval(() => {
-      const el = document.getElementById('s' + i);
-      if (el) el.classList.add('done');
+      const el = document.getElementById('s'+i); if (el) { el.classList.remove('active'); el.classList.add('done'); }
       i++;
-      const next = document.getElementById('s' + i);
-      if (next) next.classList.add('active');
+      const nx = document.getElementById('s'+i); if (nx) nx.classList.add('active');
       if (i > 4) clearInterval(iv);
     }, 2200);
   }
 
   function renderItem(raw) {
-    let item = raw.trim();
-    const srcMatch = item.match(/[\u2014\u2013]\s*([^\u2014\u2013]+)$/);
-    let srcHtml = '';
-    if (srcMatch) {
-      srcHtml = ` <em>— ${srcMatch[1].trim()}</em>`;
-      item = item.slice(0, item.lastIndexOf(srcMatch[0])).trim();
+    // Strip markdown bold
+    let text = raw.replace(/\*\*/g, '').trim();
+    // Extract source after em dash or en dash
+    let source = '';
+    const dashIdx = Math.max(text.lastIndexOf('\u2014'), text.lastIndexOf('\u2013'));
+    if (dashIdx > 10) {
+      source = text.slice(dashIdx + 1).trim();
+      text = text.slice(0, dashIdx).trim();
     }
-    item = item.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-    item = item.replace(/\*/g, '');
-    return `<li>${item}${srcHtml}</li>`;
+    // Split title (before first colon) from body (after)
+    const ci = text.indexOf(':');
+    let out = '';
+    if (ci > 0 && ci < text.length - 1 && text.slice(ci+1).trim().length > 0) {
+      out = `<span class="item-title">${text.slice(0, ci+1)}</span> ${text.slice(ci+1).trim()}`;
+    } else {
+      out = text;
+    }
+    if (source) out += ` <span class="item-source">— ${source}</span>`;
+    return `<li>${out}</li>`;
   }
 
   function parseDigest(text) {
-    const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+    const EMOJIS = { '📊':'snapshot', '🏠':'RESIDENTIAL', '🏢':'COMMERCIAL & INDUSTRIAL', '💰':'FINANCING & RATES', '📈':'INVESTMENT & DEALS', '🌐':'MACRO & POLICY' };
+    const lines = text.split('\n').map(l => l.trim()).filter(l => l);
     const sections = [];
-    let current = null;
+    let cur = null;
 
     for (const line of lines) {
-      if (line.startsWith('📊') || /MARKET SNAPSHOT/i.test(line)) {
-        current = { type: 'snapshot', content: '' };
-        sections.push(current);
+      if (/^━+$/.test(line) || /DIGEST|APL GROUP|Compiled by/i.test(line)) continue;
+
+      // Section header — starts with one of the emoji keys
+      const emoji = Object.keys(EMOJIS).find(e => line.startsWith(e));
+      if (emoji) {
+        const type = EMOJIS[emoji];
+        const title = line.replace(emoji, '').replace(/\*\*/g,'').trim();
+        cur = { type: type === 'snapshot' ? 'snapshot' : 'list', title: title || type, items: [], content: '' };
+        sections.push(cur);
         continue;
       }
-      if (/^(🏠|🏢|💰|📈|🌐)/.test(line) || /^#+\s*(RESIDENTIAL|COMMERCIAL|FINANCING|INVESTMENT|MACRO)/i.test(line)) {
-        const title = line.replace(/^[🏠🏢💰📈🌐#+\s]+/, '').replace(/\*\*/g, '').trim();
-        current = { type: 'list', title: title, items: [] };
-        sections.push(current);
+
+      // Bullet
+      if (/^[•\-]\s/.test(line)) {
+        const item = line.replace(/^[•\-]\s+/, '');
+        if (!cur) { cur = { type:'list', title:'News', items:[], content:'' }; sections.push(cur); }
+        if (cur.type === 'snapshot') cur.content += (cur.content ? ' ' : '') + item;
+        else cur.items.push(item);
         continue;
       }
-      if (/^[•\-]/.test(line)) {
-        const item = line.replace(/^[•\-]\s*/, '');
-        if (current?.type === 'snapshot') current.content += (current.content ? ' ' : '') + item;
-        else if (current?.type === 'list') current.items.push(item);
-        continue;
-      }
-      if (current?.type === 'snapshot' && !line.startsWith('━') && !/DIGEST|Compiled/i.test(line)) {
-        current.content += (current.content ? ' ' : '') + line;
+
+      // Continuation line
+      if (cur) {
+        if (cur.type === 'snapshot') cur.content += ' ' + line;
+        else if (cur.items.length > 0) cur.items[cur.items.length - 1] += ' ' + line;
       }
     }
-    return sections.filter(s => (s.type === 'snapshot' && s.content) || (s.type === 'list' && s.items.length > 0));
+
+    return sections.filter(s =>
+      (s.type === 'snapshot' && s.content.length > 5) ||
+      (s.type === 'list' && s.items.length > 0)
+    );
   }
 
-  function renderDigest(markdown, fromCache) {
-    const sections = parseDigest(markdown);
-    let html = '<div class="digest-body">';
-    const icons = { 'RESIDENTIAL': '🏠', 'COMMERCIAL': '🏢', 'FINANCING': '💰', 'INVESTMENT': '📈', 'MACRO': '🌐' };
+  function renderDigest(raw, fromCache) {
+    const sections = parseDigest(raw);
+    const ICONS = { RESIDENTIAL:'🏠', COMMERCIAL:'🏢', FINANCING:'💰', INVESTMENT:'📈', MACRO:'🌐' };
+    let html = '';
 
     for (const sec of sections) {
       if (sec.type === 'snapshot') {
         html += `<div class="section">
-          <div class="section-header">
-            <div class="section-icon">📊</div>
-            <div class="section-title">Market Snapshot</div>
-          </div>
+          <div class="section-header"><div class="section-icon">📊</div><div class="section-title">Market Snapshot</div></div>
           <div class="snapshot-box">${sec.content}</div>
         </div>`;
       } else {
-        const icon = Object.entries(icons).find(([k]) => sec.title.toUpperCase().includes(k))?.[1] || '📌';
-        const items = sec.items.map(renderItem).join('');
+        const icon = Object.entries(ICONS).find(([k]) => sec.title.toUpperCase().includes(k))?.[1] || '📌';
         html += `<div class="section">
-          <div class="section-header">
-            <div class="section-icon">${icon}</div>
-            <div class="section-title">${sec.title}</div>
-          </div>
-          <ul>${items}</ul>
+          <div class="section-header"><div class="section-icon">${icon}</div><div class="section-title">${sec.title}</div></div>
+          <ul>${sec.items.map(renderItem).join('')}</ul>
         </div>`;
       }
     }
 
-    const ts = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    const ts = new Date().toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit' });
     html += `<div class="footer-bar">
       <div class="footer-tag">Compiled by Claude · APL Group</div>
-      ${fromCache
-        ? '<div class="cached-badge">Cached today · click Refresh for latest</div>'
-        : `<div class="cached-badge">Generated at ${ts}</div>`}
+      <div class="cached-badge">${fromCache ? 'Cached · click Refresh for latest' : 'Generated at ' + ts}</div>
     </div>`;
-    html += '</div>';
-    document.getElementById('content-area').innerHTML = html;
+
+    document.getElementById('content-area').innerHTML = `<div class="digest-body">${html}</div>`;
   }
 
   async function fetchDigest(force) {
-    const apiKey = getApiKey();
-    if (!apiKey) {
-      renderApiKeySection(true);
-      document.getElementById('content-area').innerHTML = '';
-      return;
-    }
+    const apiKey = getKey();
+    if (!apiKey) { showKeyPrompt(); return; }
 
-    const key = todayKey();
-
+    const cacheKey = todayKey();
     if (!force) {
-      const cached = localStorage.getItem(key);
+      const cached = localStorage.getItem(cacheKey);
       if (cached) { renderDigest(cached, true); return; }
     }
 
     showLoading();
     document.getElementById('refresh-btn').disabled = true;
-    const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+    const today = new Date().toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
 
     try {
       const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -532,68 +280,81 @@
         },
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514',
-          max_tokens: 3000,
+          max_tokens: 4000,
           tools: [{ type: 'web_search_20250305', name: 'web_search' }],
-          system: `You are a professional real estate analyst. Search the web for today's most important real estate news (${today}) and write a morning digest.
+          system: `Today is ${today}. You write a real estate morning briefing by searching the web and summarizing today's top stories.
 
-CRITICAL: Every bullet point MUST have a real description after the headline. Never output a headline without content. Format:
+IMPORTANT: Every bullet point you write must contain the full story — a title, a colon, then 1-2 sentences of real information with actual facts and numbers. Never write a bullet that has only a title and ends with a colon.
+
+Correct example:
+• Fed holds rates steady: The Federal Reserve voted 11-1 to keep the federal funds rate at 5.25-5.5% on Wednesday, citing persistent inflation at 3.2% and strong jobs data. Mortgage rates edged up to 6.71% following the announcement. — Reuters
+
+Wrong example (do NOT do this):
+• Fed Holds Rates Steady:
+
+Use plain text only — no asterisks, no markdown. Use an em dash (—) before the source name at the end of each bullet.
+
+Write the digest using this structure:
 
 📊 MARKET SNAPSHOT
-- [Write 2 full sentences describing today's overall market direction and key themes.]
+• [2 full sentences on today's overall market direction, key rate levels, and top theme.]
 
 🏠 RESIDENTIAL
-- **Headline here:** Write 1-2 full sentences of actual news content describing what happened. — SourceName
-- **Headline here:** Write 1-2 full sentences of actual news content describing what happened. — SourceName
-- **Headline here:** Write 1-2 full sentences of actual news content describing what happened. — SourceName
+• Story title: Full description with facts and numbers. — Source
+• Story title: Full description with facts and numbers. — Source
+• Story title: Full description with facts and numbers. — Source
 
 🏢 COMMERCIAL & INDUSTRIAL
-- **Headline here:** Write 1-2 full sentences of actual news content describing what happened. — SourceName
-- **Headline here:** Write 1-2 full sentences of actual news content describing what happened. — SourceName
+• Story title: Full description with deal size, location, or key details. — Source
+• Story title: Full description with deal size, location, or key details. — Source
 
 💰 FINANCING & RATES
-- **Headline here:** Write 1-2 full sentences about current rates or financing news. — SourceName
-- **Headline here:** Write 1-2 full sentences about Fed or credit markets. — SourceName
+• Story title: Full description with actual rate numbers and what caused the move. — Source
+• Story title: Full description with Fed or lending market detail. — Source
 
 📈 INVESTMENT & DEALS
-- **Headline here:** Write 1-2 full sentences about this deal or investment trend. — SourceName
-- **Headline here:** Write 1-2 full sentences about this deal or investment trend. — SourceName
+• Deal name: Full description with buyer, seller, price, and asset type. — Source
+• Deal name: Full description with buyer, seller, price, and asset type. — Source
 
 🌐 MACRO & POLICY
-- **Headline here:** Write 1-2 full sentences about this policy or macro trend. — SourceName
-
-Rules: Always write real content after each headline. Use — (em dash) before source name. No empty bullets. No preamble. No closing remarks.`,
-          messages: [{ role: 'user', content: `Search for real estate news and compile the full morning digest for ${today}. Search for: real estate market news today, mortgage rates today, commercial real estate deals news, housing market update, real estate investment news.` }]
+• Topic: Full description of the policy, regulation, or economic development. — Source`,
+          messages: [{
+            role: 'user',
+            content: `Search the web for today's real estate news (${today}) and write the complete morning digest. Search for: real estate news today, mortgage rates today, commercial real estate deals news, housing market update today, real estate investment news.`
+          }]
         })
       });
 
       if (res.status === 401) {
-        localStorage.removeItem('anthropic_api_key');
-        renderApiKeySection(true);
-        document.getElementById('content-area').innerHTML = `<div class="error-state"><div class="error-label">Invalid API key — please re-enter your key above</div></div>`;
+        localStorage.removeItem('ant_key');
+        showKeyPrompt();
+        document.getElementById('content-area').innerHTML = `<div class="error-state"><div class="error-label">Invalid API key — please enter a valid key above</div></div>`;
         document.getElementById('refresh-btn').disabled = false;
         return;
       }
 
       const data = await res.json();
-      const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n');
+      const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n').trim();
 
-      if (text && text.length > 100) {
-        localStorage.setItem(key, text);
+      if (text && text.length > 200) {
+        localStorage.setItem(cacheKey, text);
         renderDigest(text, false);
       } else {
-        throw new Error('Empty response');
+        throw new Error('Response too short');
       }
-    } catch (err) {
+
+    } catch(err) {
+      console.error('Digest error:', err);
       document.getElementById('content-area').innerHTML = `
         <div class="error-state">
-          <div class="error-label">Unable to load digest — check your API key or try refreshing</div>
+          <div class="error-label">Could not load digest. Check your API key, then click Refresh.</div>
         </div>`;
     }
 
     document.getElementById('refresh-btn').disabled = false;
   }
 
-  setDateLabels();
+  init();
   fetchDigest(false);
 </script>
 </body>
