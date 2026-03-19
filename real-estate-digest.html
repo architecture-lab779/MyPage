@@ -19,49 +19,35 @@
   .headline { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; line-height: 1.15; color: #f5ede0; margin-bottom: 6px; }
   .subheadline { font-size: 15px; color: #888; font-weight: 300; margin-bottom: 28px; border-bottom: 0.5px solid #222; padding-bottom: 22px; }
 
+  .btn-row { display: flex; gap: 10px; margin-bottom: 28px; flex-wrap: wrap; }
   .btn { display: inline-flex; align-items: center; gap: 7px; background: transparent; border: 1px solid #333; color: #888; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 14px; border-radius: 3px; cursor: pointer; transition: all 0.2s; }
   .btn:hover { border-color: #c8a96e; color: #c8a96e; }
-  .btn-primary { border-color: #c8a96e; color: #c8a96e; }
-  .btn-primary:hover { background: #c8a96e22; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-primary { border-color: #c8a96e55; color: #c8a96e; }
   .btn svg { width: 12px; height: 12px; }
-  .btn-row { display: flex; gap: 10px; margin-bottom: 28px; flex-wrap: wrap; }
 
-  /* How-to box shown when no digest exists */
-  .howto {
-    background: #141410;
-    border: 0.5px solid #2a2820;
-    border-left: 2px solid #c8a96e;
-    border-radius: 2px;
-    padding: 24px 28px;
-    margin-bottom: 28px;
-  }
-  .howto-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #c8a96e; margin-bottom: 16px; }
-  .howto ol { padding-left: 20px; }
-  .howto ol li { font-size: 14px; color: #888; line-height: 1.8; }
-  .howto ol li strong { color: #c8bfa8; }
-  .howto ol li a { color: #c8a96e; text-decoration: none; }
-  .howto ol li a:hover { text-decoration: underline; }
+  /* API key setup */
+  .notice { background: #141410; border: 0.5px solid #2a2820; border-left: 2px solid #c8a96e; border-radius: 2px; padding: 16px 20px; margin-bottom: 24px; font-size: 13px; color: #888; line-height: 1.7; }
+  .notice strong { color: #c8a96e; }
+  .notice a { color: #c8a96e; text-decoration: none; }
+  .notice a:hover { text-decoration: underline; }
+  .key-row { display: flex; gap: 8px; margin-top: 12px; }
+  .key-input { flex: 1; background: #0d0d0d; border: 0.5px solid #333; border-radius: 3px; color: #e8e0d0; font-family: 'DM Mono', monospace; font-size: 12px; padding: 8px 10px; outline: none; }
+  .key-input:focus { border-color: #c8a96e; }
+  .key-save { background: transparent; border: 1px solid #c8a96e; color: #c8a96e; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; padding: 8px 16px; border-radius: 3px; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+  .key-save:hover { background: #c8a96e22; }
 
-  /* Paste area */
-  .paste-area {
-    width: 100%;
-    background: #0a0a0a;
-    border: 0.5px solid #2a2a2a;
-    border-radius: 3px;
-    color: #888;
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    padding: 12px 14px;
-    resize: vertical;
-    min-height: 120px;
-    margin-top: 16px;
-    outline: none;
-    line-height: 1.6;
-  }
-  .paste-area:focus { border-color: #c8a96e; }
-  .paste-area::placeholder { color: #444; }
+  /* Loading */
+  .loading-state { padding: 60px 0; text-align: center; }
+  .loading-spinner { width: 32px; height: 32px; border: 1.5px solid #333; border-top-color: #c8a96e; border-radius: 50%; animation: spin 0.9s linear infinite; margin: 0 auto 16px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-label { font-family: 'DM Mono', monospace; font-size: 11px; color: #555; letter-spacing: 0.1em; text-transform: uppercase; }
+  .loading-steps { margin-top: 20px; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  .step { font-family: 'DM Mono', monospace; font-size: 11px; color: #444; letter-spacing: 0.06em; opacity: 0; transition: opacity 0.4s; }
+  .step.active { color: #c8a96e; opacity: 1; }
+  .step.done { color: #555; opacity: 1; }
 
-  /* Digest sections */
+  /* Digest */
   .section { margin-bottom: 28px; padding-bottom: 24px; border-bottom: 0.5px solid #1e1e1e; }
   .section:last-of-type { border-bottom: none; }
   .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
@@ -79,8 +65,10 @@
   .footer-tag { font-family: 'DM Mono', monospace; font-size: 10px; color: #444; letter-spacing: 0.1em; text-transform: uppercase; }
   .cached-badge { font-family: 'DM Mono', monospace; font-size: 10px; color: #555; letter-spacing: 0.08em; text-transform: uppercase; background: #161616; border: 0.5px solid #2a2a2a; padding: 3px 8px; border-radius: 2px; }
 
-  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1a1a14; border: 0.5px solid #c8a96e; color: #c8a96e; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.08em; padding: 10px 20px; border-radius: 3px; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 100; }
-  .toast.show { opacity: 1; }
+  /* Error / countdown */
+  .error-state { padding: 48px 0; text-align: center; }
+  .error-label { font-family: 'DM Mono', monospace; font-size: 12px; color: #666; letter-spacing: 0.08em; line-height: 1.8; }
+  .countdown-num { font-family: 'Playfair Display', serif; font-size: 52px; color: #c8a96e; margin: 12px 0; letter-spacing: 0.04em; }
 
   @media (max-width: 600px) {
     .masthead { padding: 14px 20px; }
@@ -99,26 +87,30 @@
 <div class="container">
   <div class="dateline" id="top-dateline"></div>
   <h1 class="headline">Real Estate<br>Morning Briefing</h1>
-  <p class="subheadline">Daily market intelligence for the APL Group</p>
+  <p class="subheadline">Daily market intelligence for the APL Group — refreshed every morning after 9:00 AM EST</p>
+
+  <div id="key-section"></div>
 
   <div class="btn-row">
-    <button class="btn btn-primary" onclick="openClaude()">
+    <button class="btn btn-primary" id="refresh-btn" onclick="fetchDigest(true)">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M8 2L14 8L8 14" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M2 8h12" stroke-linecap="round"/>
+        <path d="M13.5 8a5.5 5.5 0 11-1.1-3.3" stroke-linecap="round"/>
+        <path d="M13.5 3v2.5H11" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-      Generate today's digest
+      Refresh digest
     </button>
-    <button class="btn" onclick="clearDigest()">Clear &amp; reset</button>
+    <button class="btn" onclick="clearCache()">Clear cache &amp; reload</button>
+    <button class="btn" onclick="changeKey()">Change API key</button>
   </div>
 
-  <div id="main-area"></div>
+  <div id="content-area"></div>
 </div>
-
-<div class="toast" id="toast"></div>
 
 <script>
   const PREFIX = 'red_';
+  let isLoading = false;
+  let countdownTimer = null;
+
   function todayKey() { return PREFIX + new Date().toISOString().slice(0,10); }
   function fmtDate(d) { return d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'}); }
 
@@ -128,79 +120,113 @@
     document.getElementById('top-dateline').textContent = s;
   }
 
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg; t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
-  }
+  function getKey() { return localStorage.getItem('ant_key') || ''; }
+  function saveKey(k) { localStorage.setItem('ant_key', k.trim()); }
 
-  function openClaude() {
-    const today = fmtDate(new Date());
-    const prompt = `Run the real estate digest for ${today}. Search for today's top real estate news and write the morning briefing in this exact format — plain text, no asterisks:
-
-📊 MARKET SNAPSHOT
-• [2 sentences on market direction and key themes today]
-
-🏠 RESIDENTIAL
-• Story title: Full 1-2 sentence description with facts and numbers. — Source
-• Story title: Full 1-2 sentence description with facts and numbers. — Source
-• Story title: Full 1-2 sentence description with facts and numbers. — Source
-
-🏢 COMMERCIAL & INDUSTRIAL
-• Story title: Full 1-2 sentence description with deal size or key details. — Source
-• Story title: Full 1-2 sentence description with deal size or key details. — Source
-
-💰 FINANCING & RATES
-• Story title: Full description with actual rate numbers. — Source
-• Story title: Full description with Fed or lending detail. — Source
-
-📈 INVESTMENT & DEALS
-• Deal name: Full description with buyer, seller, price, asset type. — Source
-• Deal name: Full description with buyer, seller, price, asset type. — Source
-
-🌐 MACRO & POLICY
-• Topic: Full description of policy or economic development. — Source`;
-
-    navigator.clipboard.writeText(prompt).then(() => {
-      showToast('Prompt copied to clipboard!');
-      setTimeout(() => window.open('https://claude.ai', '_blank'), 600);
-    }).catch(() => {
-      window.open('https://claude.ai', '_blank');
-      showToast('Open Claude.ai and paste the prompt');
-    });
-  }
-
-  function clearDigest() {
+  function clearCache() {
     localStorage.removeItem(todayKey());
-    showHowTo();
-    showToast('Digest cleared');
+    if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
+    isLoading = false;
+    document.getElementById('refresh-btn').disabled = false;
+    fetchDigest(false);
+  }
+
+  function changeKey() {
+    localStorage.removeItem('ant_key');
+    showKeyPrompt();
+    document.getElementById('content-area').innerHTML = '';
+  }
+
+  function showKeyPrompt() {
+    document.getElementById('key-section').innerHTML = `
+      <div class="notice">
+        <strong>One-time setup:</strong> Enter your Anthropic API key to power the digest.
+        Stored only in your browser, never shared. Get yours at
+        <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com/settings/keys</a>.
+        <div class="key-row">
+          <input class="key-input" id="key-inp" type="password" placeholder="sk-ant-..." />
+          <button class="key-save" onclick="onSaveKey()">Save &amp; Load</button>
+        </div>
+      </div>`;
+    document.getElementById('content-area').innerHTML = '';
+  }
+
+  function onSaveKey() {
+    const v = document.getElementById('key-inp').value.trim();
+    if (!v.startsWith('sk-')) { alert('Please enter a valid Anthropic API key (starts with sk-ant-)'); return; }
+    saveKey(v);
+    document.getElementById('key-section').innerHTML = '';
+    fetchDigest(false);
+  }
+
+  function showLoading() {
+    document.getElementById('content-area').innerHTML = `
+      <div class="loading-state">
+        <div class="loading-spinner"></div>
+        <div class="loading-label">Compiling today's digest</div>
+        <div class="loading-steps">
+          <div class="step active" id="s1">Searching real estate headlines...</div>
+          <div class="step" id="s2">Scanning mortgage &amp; rates...</div>
+          <div class="step" id="s3">Reviewing commercial deals...</div>
+          <div class="step" id="s4">Writing briefing...</div>
+        </div>
+      </div>`;
+    let i = 1;
+    const iv = setInterval(() => {
+      const el = document.getElementById('s'+i);
+      if (el) { el.classList.remove('active'); el.classList.add('done'); }
+      i++;
+      const nx = document.getElementById('s'+i);
+      if (nx) nx.classList.add('active');
+      if (i > 4) clearInterval(iv);
+    }, 2500);
+  }
+
+  function startCountdown(seconds) {
+    if (countdownTimer) clearInterval(countdownTimer);
+    let secs = seconds;
+    const tick = () => {
+      if (secs < 0) {
+        clearInterval(countdownTimer);
+        countdownTimer = null;
+        fetchDigest(true);
+        return;
+      }
+      const m = Math.floor(secs/60), s = secs % 60;
+      document.getElementById('content-area').innerHTML = `
+        <div class="error-state">
+          <div class="error-label">Rate limit reached. Auto-retrying in:</div>
+          <div class="countdown-num">${m}:${s.toString().padStart(2,'0')}</div>
+          <div class="error-label">Or click <strong style="color:#c8a96e">Refresh Digest</strong> to retry now</div>
+        </div>`;
+      secs--;
+    };
+    tick();
+    countdownTimer = setInterval(tick, 1000);
   }
 
   function renderItem(raw) {
-    let text = raw.replace(/\*\*/g, '').trim();
+    let text = raw.replace(/\*\*/g,'').trim();
     let source = '';
-    const dashIdx = Math.max(text.lastIndexOf('\u2014'), text.lastIndexOf('\u2013'));
-    if (dashIdx > 10) { source = text.slice(dashIdx+1).trim(); text = text.slice(0, dashIdx).trim(); }
+    const di = Math.max(text.lastIndexOf('\u2014'), text.lastIndexOf('\u2013'));
+    if (di > 10) { source = text.slice(di+1).trim(); text = text.slice(0,di).trim(); }
     const ci = text.indexOf(':');
-    let out = '';
-    if (ci > 0 && ci < text.length - 1 && text.slice(ci+1).trim().length > 0) {
-      out = `<span class="item-title">${text.slice(0,ci+1)}</span> ${text.slice(ci+1).trim()}`;
-    } else { out = text; }
+    let out = (ci > 0 && ci < text.length-1 && text.slice(ci+1).trim())
+      ? `<span class="item-title">${text.slice(0,ci+1)}</span> ${text.slice(ci+1).trim()}`
+      : text;
     if (source) out += ` <span class="item-source">— ${source}</span>`;
     return `<li>${out}</li>`;
   }
 
   function parseDigest(text) {
-    const EMOJIS = { '📊':'snapshot','🏠':'RESIDENTIAL','🏢':'COMMERCIAL & INDUSTRIAL','💰':'FINANCING & RATES','📈':'INVESTMENT & DEALS','🌐':'MACRO & POLICY' };
-    const lines = text.split('\n').map(l => l.trim()).filter(l => l);
+    const EMOJIS = {'📊':'snapshot','🏠':'RESIDENTIAL','🏢':'COMMERCIAL & INDUSTRIAL','💰':'FINANCING & RATES','📈':'INVESTMENT & DEALS','🌐':'MACRO & POLICY'};
+    const lines = text.split('\n').map(l=>l.trim()).filter(l=>l);
     const sections = []; let cur = null;
     for (const line of lines) {
-      if (/^━+$/.test(line) || /DIGEST|APL GROUP|Compiled by/i.test(line)) continue;
-      const emoji = Object.keys(EMOJIS).find(e => line.startsWith(e));
+      if (/^━+$/.test(line) || /APL GROUP|Compiled by/i.test(line)) continue;
+      const emoji = Object.keys(EMOJIS).find(e=>line.startsWith(e));
       if (emoji) {
-        const type = EMOJIS[emoji];
-        const title = line.replace(emoji,'').replace(/\*\*/g,'').trim();
-        cur = { type: type==='snapshot'?'snapshot':'list', title: title||type, items:[], content:'' };
+        cur = { type: EMOJIS[emoji]==='snapshot'?'snapshot':'list', title: line.replace(emoji,'').replace(/\*\*/g,'').trim() || EMOJIS[emoji], items:[], content:'' };
         sections.push(cur); continue;
       }
       if (/^[•\-]\s/.test(line)) {
@@ -218,9 +244,8 @@
     return sections.filter(s=>(s.type==='snapshot'&&s.content.length>5)||(s.type==='list'&&s.items.length>0));
   }
 
-  function renderDigest(raw) {
+  function renderDigest(raw, fromCache) {
     const sections = parseDigest(raw);
-    if (!sections.length) { showHowTo('Could not parse the pasted text. Make sure you copy the full response from Claude.'); return; }
     const ICONS = {RESIDENTIAL:'🏠',COMMERCIAL:'🏢',FINANCING:'💰',INVESTMENT:'📈',MACRO:'🌐'};
     let html = '';
     for (const sec of sections) {
@@ -232,46 +257,127 @@
       }
     }
     const ts = new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
-    html += `<div class="footer-bar"><div class="footer-tag">Compiled by Claude · APL Group</div><div class="cached-badge">Updated ${ts}</div></div>`;
-    document.getElementById('main-area').innerHTML = `<div class="digest-body">${html}</div>`;
+    html += `<div class="footer-bar"><div class="footer-tag">Compiled by Claude · APL Group</div><div class="cached-badge">${fromCache?'Cached · click Refresh for latest':'Generated at '+ts}</div></div>`;
+    document.getElementById('content-area').innerHTML = `<div class="digest-body">${html}</div>`;
   }
 
-  function showHowTo(errorMsg) {
+  async function fetchDigest(force) {
+    if (isLoading) return;
+
+    const apiKey = getKey();
+    if (!apiKey) { showKeyPrompt(); return; }
+
+    const cacheKey = todayKey();
+    if (!force) {
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) { renderDigest(cached, true); return; }
+    }
+
+    // Cancel any running countdown
+    if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
+
+    isLoading = true;
+    document.getElementById('refresh-btn').disabled = true;
+    showLoading();
+
     const today = fmtDate(new Date());
-    document.getElementById('main-area').innerHTML = `
-      <div class="howto">
-        <div class="howto-title">How to get today's digest — free, no API key needed</div>
-        ${errorMsg ? `<p style="color:#c87a6e;font-size:13px;margin-bottom:16px;">${errorMsg}</p>` : ''}
-        <ol>
-          <li><strong>Click "Generate today's digest"</strong> above — it copies the prompt and opens <a href="https://claude.ai" target="_blank">Claude.ai</a></li>
-          <li><strong>Paste the prompt</strong> into Claude.ai (Ctrl+V / Cmd+V) and press Enter</li>
-          <li><strong>Copy Claude's full response</strong> (Ctrl+A then Ctrl+C in the response)</li>
-          <li><strong>Paste it below</strong> and click Render</li>
-        </ol>
-        <textarea class="paste-area" id="paste-input" placeholder="Paste Claude's response here..."></textarea>
-        <div style="margin-top:10px;">
-          <button class="btn btn-primary" onclick="onPaste()">Render digest</button>
-        </div>
-      </div>`;
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 4000,
+          tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+          system: `Today is ${today}. You are a real estate analyst. Search the web for today's top real estate news and write a morning briefing.
+
+CRITICAL RULE: Every bullet must be a complete sentence with real facts. Never write a bullet that is just a title ending in a colon with nothing after it.
+
+Correct example:
+• Fed holds rates at 5.25%: The Federal Reserve held rates steady for the third consecutive meeting, citing persistent core inflation at 3.1% and resilient job growth. Mortgage rates climbed to 6.8% following the announcement. — Reuters
+
+Wrong (never do this):
+• Fed Holds Rates:
+
+Plain text only. No asterisks. No markdown. Em dash (—) before source name.
+
+Write the full digest now:
+
+📊 MARKET SNAPSHOT
+• Two complete sentences summarizing today's market direction, rate environment, and key theme.
+
+🏠 RESIDENTIAL
+• Title: Full 1-2 sentence description with specific data. — Source
+• Title: Full 1-2 sentence description with specific data. — Source
+• Title: Full 1-2 sentence description with specific data. — Source
+
+🏢 COMMERCIAL & INDUSTRIAL
+• Title: Full 1-2 sentence description with dollar amounts or details. — Source
+• Title: Full 1-2 sentence description with dollar amounts or details. — Source
+
+💰 FINANCING & RATES
+• Title: Full description with actual rate numbers and cause. — Source
+• Title: Full description with Fed or lending detail. — Source
+
+📈 INVESTMENT & DEALS
+• Title: Full description with buyer, seller, price, asset type. — Source
+• Title: Full description with buyer, seller, price, asset type. — Source
+
+🌐 MACRO & POLICY
+• Title: Full description of policy or economic development. — Source`,
+          messages: [{
+            role: 'user',
+            content: `Search for today's real estate news and write the full morning digest for ${today}. Search: real estate market news today, mortgage rates today, commercial real estate deals news, housing market update, real estate investment news.`
+          }]
+        })
+      });
+
+      if (res.status === 401) {
+        localStorage.removeItem('ant_key');
+        isLoading = false;
+        document.getElementById('refresh-btn').disabled = false;
+        showKeyPrompt();
+        document.getElementById('content-area').innerHTML = `<div class="error-state"><div class="error-label">Invalid API key — please enter a valid key above</div></div>`;
+        return;
+      }
+
+      if (res.status === 429) {
+        isLoading = false;
+        document.getElementById('refresh-btn').disabled = false;
+        startCountdown(90);
+        return;
+      }
+
+      const data = await res.json();
+      const text = (data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('\n').trim();
+
+      if (text && text.length > 200) {
+        localStorage.setItem(cacheKey, text);
+        renderDigest(text, false);
+      } else {
+        throw new Error('Response too short');
+      }
+
+    } catch(err) {
+      console.error('Digest error:', err);
+      document.getElementById('content-area').innerHTML = `
+        <div class="error-state">
+          <div class="error-label">Could not load digest.<br>Wait a moment then click Refresh Digest.</div>
+        </div>`;
+    }
+
+    isLoading = false;
+    document.getElementById('refresh-btn').disabled = false;
   }
 
-  function onPaste() {
-    const val = document.getElementById('paste-input').value.trim();
-    if (!val) { showToast('Please paste the Claude response first'); return; }
-    localStorage.setItem(todayKey(), val);
-    renderDigest(val);
-    showToast('Digest rendered!');
-  }
-
-  // On load: show cached digest or how-to
-  function load() {
-    init();
-    const cached = localStorage.getItem(todayKey());
-    if (cached) renderDigest(cached);
-    else showHowTo();
-  }
-
-  load();
+  init();
+  fetchDigest(false);
 </script>
 </body>
 </html>
